@@ -1,0 +1,28 @@
+* what is it?
+It is a small program that reads a text file formatted like Kindle's My Clippings.txt on stdin and produces a complete HTML file with (sorted) highlights from that file on stdout. It also optionally takes a string to fuzzy-match with titles as first argument.
+
+Like this: parsertest.py 'first as tragedy then as farce' < /media/Kindle/documents/My\ Clippings.txt > myzizekquotes.html
+* requirements
+- python-levenshtein
+* files
+- parsertest.py: an actual CLI itility, based on my own homegrown parser (so don't trust it!)
+- kindleclippingsparser.py: a class/module for parsing Kindle's My Clippings.
+* known errors
+- all input is assumed to be Unicode, because, well, it should be.
+- not very fine-grained search, yet.
+* copying
+kindle-clippings-parser is free software.
+
+You can redistribute it and/or modify it under the terms of the GNU
+General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program, (in the COPYING-GPL-3 file in this
+directory). If not, see http://www.gnu.org/licenses/ 
