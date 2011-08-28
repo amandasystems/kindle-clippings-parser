@@ -25,11 +25,11 @@ class KindleClippingsParser():
 
         def collect_title(n, i):
             title = unicode()
+            iterm = n[i:].split('\r\n')[0].rfind('(')
             for index, c in enumerate(n[i:]):
                 if c == ' ':
                     # if the next character's an '(', we've found our terminator.
-                    # TODO edge case: there's a sub-title starting with '('. Catch later.
-                    if note[index + 1] == '(':
+                    if index + 1 == iterm:
                         #print "got end of title."
                         return (title, index + 2 + i)
                 if note[index + 1] == '\n':
@@ -79,24 +79,28 @@ class KindleClippingsParser():
                 exit
 
         def collect_location(n, i):
+            loc = unicode()
+            if n[i:][:4] == ' on ':
+                i += 4
+                for index, c in enumerate(n[i:]):
+                    if c == '|':
+                        #print "got end-of-location"
+                        loc = loc.strip() + ','
+                        i += 1 + index
+                        break
+                    else:
+                        loc += c
+                        
             if n[i:][:6] == " Loc. ":
                 i += 6
-                loc = unicode()
                 for index, c in enumerate(n[i:]):
                     if c == '|':
                         #print "got end-of-location"
                         return loc.strip(), i + 1 + index
                     else:
-                        loc += c
-            elif n[i:][:4] == ' on ':
-                i += 4
-                loc = unicode()
-                for index, c in enumerate(n[i:]):
-                    if c == '|':
-                        #print "got end-of-location"
-                        return loc.strip(), i + 1 + index
-                    else:
-                        loc += c
+                        if c != ' ':
+                            loc += c
+            
             else:
                 raise self.ParseError("parse error at %d. Expected ' Loc.'" % i)
             
